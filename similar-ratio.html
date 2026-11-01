@@ -1,0 +1,32 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>닮음비와 길이·둘레·넓이의 관계</title>
+<style>
+body{margin:0;font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:#f4f5fb;color:#222}
+.w{max-width:860px;margin:0 auto;padding:16px}h1{text-align:center;font-size:26px;margin:10px 0 4px}.sub{text-align:center;color:#666;margin:0 0 16px}
+.c{background:#fff;border-radius:14px;box-shadow:0 2px 8px #0001;padding:16px;margin-bottom:14px}
+.row{display:flex;gap:14px;flex-wrap:wrap}.row>.c{flex:1;min-width:240px}
+.k{font-size:30px;font-weight:800;color:#7b3fe4;background:#efe7ff;border-radius:10px;padding:4px 12px}
+input[type=range]{width:100%;accent-color:#7b3fe4;height:30px}
+table{width:100%;border-collapse:collapse;text-align:center}td,th{border-bottom:1px solid #eee;padding:8px}
+.r{border:1px solid #eee;border-radius:10px;padding:8px;text-align:center;margin-bottom:8px}.r b{font-size:24px;display:block}
+svg{width:100%;height:220px}
+</style></head><body><div class="w">
+<h1>닮음비와 길이·둘레·넓이의 관계</h1><p class="sub">슬라이더를 움직이며 두 닮은 삼각형의 값이 어떻게 변하는지 관찰해 보세요.</p>
+<div class="c"><div style="display:flex;justify-content:space-between;align-items:center"><b>닮음비 조절</b><span class="k" id="kv">1.0배</span></div>
+<input type="range" id="k" min="0.5" max="3" step="0.5" value="1"></div>
+<div class="row"><div class="c"><b>기준 삼각형</b><br><small>변의 길이: 3, 4, 5</small><svg id="s1" viewBox="0 0 300 220"></svg></div>
+<div class="c"><b>닮은 삼각형</b><br><small id="t2"></small><svg id="s2" viewBox="0 0 300 220"></svg></div></div>
+<div class="row"><div class="c"><table id="tb"></table></div><div class="c" style="max-width:280px">
+<div class="r">닮음비<b id="r1" style="color:#7b3fe4"></b></div><div class="r">둘레의 비<b id="r2" style="color:#2e7d32"></b></div><div class="r">넓이의 비<b id="r3" style="color:#ef6c00"></b></div></div></div>
+</div><script>
+const g=(a,b)=>b?g(b,a%b):a;
+function ratio(a,b){a=Math.round(a*100);b=Math.round(b*100);const d=g(a,b);return a/d+' : '+b/d}
+function tri(id,k,fill,st){const u=13,x0=20,y0=200;const A=[x0,y0],C=[x0+4*k*u,y0],B=[x0,y0-3*k*u];
+document.getElementById(id).innerHTML=`<polygon points="${A} ${B} ${C}" fill="${fill}" stroke="${st}" stroke-width="2"/>`}
+function up(){const k=+kEl.value;kv.textContent=k.toFixed(1)+'배';t2.textContent='기준 삼각형의 '+k.toFixed(1)+'배';
+tri('s1',1,'#dbe7ff','#1565c0');tri('s2',k,'#ffefd6','#f59f00');
+const rows=[['변 AB',3],['변 AC',4],['변 BC',5],['둘레',12]];let h='<tr><th>항목</th><th>기준</th><th>닮은</th></tr>';
+rows.forEach(([n,v])=>h+=`<tr><td><b>${n}</b></td><td>${v}</td><td>${+(v*k).toFixed(2)}</td></tr>`);h+=`<tr><td><b>넓이</b></td><td>6</td><td>${+(6*k*k).toFixed(2)}</td></tr>`;tb.innerHTML=h;
+r1.textContent=ratio(1,k);r2.textContent=ratio(1,k);r3.textContent=ratio(1,k*k)}
+const kEl=document.getElementById('k');kEl.oninput=up;up();
+</script></body></html>
